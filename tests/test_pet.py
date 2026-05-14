@@ -10,10 +10,8 @@ class TestPet:
 
     @allure.title("Попытка удалить несуществующего питомца")
     def test_delete_nonexistent_pet(self, pet_id=9999):
-        url_path_delete = f"{BASE_URL + '/pet/' + str(pet_id)}"
-
         with allure.step("Отправка запроса на удаление несуществующего питомца"):
-            response = requests.api.request(method="delete", url=f'{url_path_delete}')
+            response = requests.api.request(method="delete", url=f"{BASE_URL}/pet/{pet_id}")
 
         with allure.step("Проверка статус-кода ответа"):
             assert response.status_code == 200, "Код ответа не совпал с ER"
