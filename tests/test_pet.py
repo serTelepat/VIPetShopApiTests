@@ -35,3 +35,14 @@ class TestPet:
 
         with allure.step("Проверка текстового содержимого ответа"):
             assert response.text == "Pet not found", "Текст ошибки не совпал с ER"
+
+    @allure.title("Попытка получить несуществующего питомца")
+    def test_get_nonexistent_pet(self, pet_id=9999):
+        with allure.step("Отправка запроса на обновление несуществующего питомца"):
+            response = requests.get(url=f"{BASE_URL}/pet/{pet_id}")
+
+        with allure.step("Проверка статус-кода ответа"):
+            assert response.status_code == 404, "Статус кода не совпал с ER"
+
+        with allure.step("Проверка текстового содержимого ответа"):
+            assert response.text == "Pet not found", "Текст ошибки не совпал с ER"
