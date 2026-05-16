@@ -20,7 +20,8 @@ class TestPet:
             assert response.text == "Pet deleted", "Текст ошибки не совпал с ER"
 
     @allure.title("Попытка обновить несуществующего питомца")
-    def test_update_nonexistent_pet(self, pet_id=9999):
+    def test_update_nonexistent_pet(self):
+        pet_id = 9999
         with allure.step("Отправка запроса на обновление несуществующего питомца"):
             body_send_request = {
                 "id": pet_id,
@@ -37,7 +38,8 @@ class TestPet:
             assert response.text == "Pet not found", "Текст ошибки не совпал с ER"
 
     @allure.title("Попытка получить данные несуществующего питомца")
-    def test_get_nonexistent_pet(self, pet_id=9999):
+    def test_get_nonexistent_pet(self):
+        pet_id = 9999
         with allure.step("Отправка запроса на получение данных несуществующего питомца"):
             response = requests.get(url=f"{BASE_URL}/pet/{pet_id}")
 
