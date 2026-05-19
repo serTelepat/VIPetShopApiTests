@@ -51,6 +51,6 @@ PET_SCHEMA = {
             "type": "string",
         }
     },
-    "required": ["id", "name", "status"],
+    "required": ["id", "name", "photoUrls", "status"],
     "additionalProperties": False
 }
