@@ -88,8 +88,7 @@ class TestPet:
                 "photoUrls": ["string"],
                 "tags": [{
                     "id": 0,
-                    "name":
-                        "string"
+                    "name": "string"
                 }],
                 "status": "available"
             }
