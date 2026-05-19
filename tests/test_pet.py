@@ -108,4 +108,4 @@ class TestPet:
             assert response_json["category"] == body_send_request["category"], "Категория не совпала с ER"
             assert response_json["photoUrls"] == body_send_request["photoUrls"], "Ссылка на фото не совпала с ER"
             assert response_json["tags"] == body_send_request["tags"], "Теги не совпали с ER"
-            assert response_json["status"] == body_send_request["status"], "Статус не воспал с ER"
+            assert response_json["status"] == body_send_request["status"], "Статус не совпал с ER"
