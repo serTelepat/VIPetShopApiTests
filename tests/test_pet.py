@@ -1,5 +1,8 @@
 import allure
 import requests
+import jsonschema
+
+from .schemas.pet_schema import PET_SCHEMA
 
 BASE_URL = 'http://5.181.109.28:9090/api/v3'
 
@@ -48,3 +51,27 @@ class TestPet:
 
         with allure.step("Проверка текстового содержимого ответа"):
             assert response.text == "Pet not found", "Текст ошибки не совпал с ER"
+
+    @allure.title("Добавление нового питомца")
+    def test_add_new_pet(self):
+        pet_id = 1
+        with allure.step("Отправление запроса на добавление нового питомца"):
+            body_send_request = {
+                "id": pet_id,
+                "name": "Tuzik",
+                "status": "available"
+            }
+
+            response = requests.post(url=f"{BASE_URL}/pet", json=body_send_request)
+
+        with allure.step("Проверка статус-кода ответа"):
+            assert response.status_code == 200, "Статус кода не совпал с ER"
+
+        with allure.step("Валидация JSON-схемы"):
+            response_json = response.json()
+            jsonschema.validate(response_json, PET_SCHEMA)
+
+        with allure.step("Проверка на соответствие отправленных и полученных значений"):
+            assert response_json["id"] == body_send_request["id"], "ID не совпал с ER"
+            assert response_json["name"] == body_send_request["name"], "Имя питомца не совпало с ER"
+            assert response_json["status"] == body_send_request["status"], "Статус не воспал с ER"
