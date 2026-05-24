@@ -1,4 +1,5 @@
 import allure
+import pytest
 import requests
 import jsonschema
 
@@ -160,3 +161,25 @@ class TestPet:
         with allure.step("Проверка на удаление существующего питомца"):
             response_get = requests.get(url=f"{BASE_URL}/pet/{pet_id}")
             assert response_get.status_code == 404, "Питомец не удалился, статус-код ответа не совпал с ER"
+
+    @allure.title("Получение списка питомцев по статусу")
+    @pytest.mark.parametrize(
+        "status, expected_status_code, data_format",
+        [
+            ("available", 200, list),
+            ("pending", 200, list),
+            ("sold", 200, list),
+            ("", 400, dict),
+            ("status", 400, dict)
+        ]
+    )
+    def test_get_pets_by_status(self, status, expected_status_code, data_format):
+        with allure.step(f"Отппавка запроса на получение списка питомцев по статусу {status}"):
+            response = requests.get(
+                url=f"{BASE_URL}/pet/findByStatus",
+                params={"status": status}
+            )
+
+        with allure.step("Проверка статуса ответа и формата данных"):
+            assert response.status_code == expected_status_code, "Статус ответа не совпал с ER"
+            assert isinstance(response.json(), data_format), "Формат данных не совпал с ER"
