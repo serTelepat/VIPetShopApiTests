@@ -27,8 +27,11 @@ class TestStore:
         with allure.step("Проверка статус-кода ответа"):
             assert response.status_code == 200, "Статус ответа не совпал с ER"
 
-        with allure.step("Проверка данных заказа"):
+        with allure.step("Валидация JSON-схемы заказа"):
             response_json = response.json()
+            jsonschema.validate(response_json, ORDER_SCHEMA)
+
+        with allure.step("Проверка данных заказа"):
             assert response_json["petId"] == body_send_request["petId"], "ID питомца не совпал с отправленным"
             assert response_json["quantity"] == body_send_request["quantity"], "Количество питомцев не совпало с отправленным"
             assert response_json["status"] == body_send_request["status"], "Статус заказа не совпал с отправленным"
